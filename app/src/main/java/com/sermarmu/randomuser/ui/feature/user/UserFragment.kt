@@ -47,8 +47,11 @@ class UserFragment : BaseFragment() {
         binding.rvUsers.apply {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(requireContext())
-            adapter = AdapterList()
-
+            adapter = AdapterList {
+                navController.navigate(
+                    UserFragmentDirections.actNavDestUserDetailFragment(it)
+                )
+            }
         }
 
         lifecycleScope.launchWhenStarted {
@@ -67,7 +70,9 @@ class UserFragment : BaseFragment() {
 }
 
 
-private class AdapterList: ListAdapter<UserModel, AdapterList.ViewHolder>(UserComparator) {
+private class AdapterList(
+    private val onClickUser: (UserModel) -> Unit
+) : ListAdapter<UserModel, AdapterList.ViewHolder>(UserComparator) {
 
     private class ViewHolder(
         private val binding: UserAdapterModelBinding
@@ -75,7 +80,8 @@ private class AdapterList: ListAdapter<UserModel, AdapterList.ViewHolder>(UserCo
         binding.root
     ) {
         fun bind(
-            model: UserModel
+            model: UserModel,
+            onClickUser: (UserModel) -> Unit
         ) = with(binding) {
             mtvNameUser.text = model.name.first
             mtvSurnameUser.text = model.name.last
@@ -85,6 +91,7 @@ private class AdapterList: ListAdapter<UserModel, AdapterList.ViewHolder>(UserCo
                 model.picture.large
             )
             root.setOnClickListener {
+                onClickUser(model)
             }
         }
     }
@@ -105,7 +112,7 @@ private class AdapterList: ListAdapter<UserModel, AdapterList.ViewHolder>(UserCo
         position: Int
     ) {
         getItem(position)!!.also {
-            holder.bind(it)
+            holder.bind(it, onClickUser)
         }
     }
 

@@ -1,7 +1,15 @@
 package com.sermarmu.data.di
 
+import android.content.Context
+import androidx.room.Room
+import com.sermarmu.data.repository.LocalRepository
+import com.sermarmu.data.repository.LocalRepositoryImpl
 import com.sermarmu.data.repository.NetworkRepository
 import com.sermarmu.data.repository.NetworkRepositoryImpl
+import com.sermarmu.data.source.local.LocalApi
+import com.sermarmu.data.source.local.LocalDatabase
+import com.sermarmu.data.source.local.LocalSource
+import com.sermarmu.data.source.local.LocalSourceImpl
 import com.sermarmu.data.source.network.NetworkApi
 import com.sermarmu.data.source.network.NetworkSource
 import com.sermarmu.data.source.network.NetworkSourceImpl
@@ -25,6 +33,14 @@ val dataModule = module {
     single<NetworkSource> { NetworkSourceImpl(get()) }
 
     single<NetworkRepository> { NetworkRepositoryImpl(get()) }
+
+    factory { provideLocalDatabase(get()) }
+
+    factory { provideRoomDatabase(get()) }
+
+    single<LocalSource> { LocalSourceImpl(get()) }
+
+    single<LocalRepository> { LocalRepositoryImpl(get()) }
 }
 
 
@@ -70,3 +86,31 @@ private fun provideNetworkRepository(
 ): NetworkRepository = networkRepository
 // endregion repository
 // endregion network
+
+// region local
+// region room
+fun provideLocalDatabase(
+    localDatabase: LocalDatabase
+): LocalApi = localDatabase.localApi()
+
+fun provideRoomDatabase(
+    context: Context
+) = Room.databaseBuilder(
+    context,
+    LocalDatabase::class.java,
+    "breakingbad-database"
+).build()
+// endregion room
+
+// region source
+fun provideLocalSource(
+    localSource: LocalSourceImpl
+): LocalSource = localSource
+// endregion source
+
+// region repository
+fun provideLocalRepository(
+    localRepository: LocalRepositoryImpl
+): LocalRepository = localRepository
+// endregion repository
+// endregion local

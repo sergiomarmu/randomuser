@@ -1,7 +1,8 @@
 object ModuleCore {
 
     // region androidx
-   const val androidXAppCompat = "1.3.1"
+    const val androidXAppCompat = "1.3.1"
+    const val androidXNavigationFragmentVersion = "2.3.2"
     // endregion androidx
 
     // region coroutines

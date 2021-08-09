@@ -1,4 +1,5 @@
 import ModuleCore.androidXAppCompat
+import ModuleCore.androidXNavigationFragmentVersion
 import ModuleCore.coroutinesVersion
 import RandomUser.kotlinVersion
 
@@ -44,6 +45,7 @@ dependencies {
 
     // region androidx
     implementation("androidx.appcompat:appcompat:$androidXAppCompat")
+    implementation("androidx.navigation:navigation-fragment-ktx:$androidXNavigationFragmentVersion")
     // endregion androidx
 
     // region coroutines

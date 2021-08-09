@@ -2,6 +2,8 @@ package com.sermarmu.core.base
 
 import android.content.Context
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -10,6 +12,9 @@ import kotlin.coroutines.CoroutineContext
 
 abstract class BaseFragment : Fragment(), CoroutineScope {
     override lateinit var coroutineContext: CoroutineContext
+
+    val navController: NavController
+        get() = findNavController()
 
     override fun onAttach(context: Context) {
         coroutineContext = SupervisorJob() + Dispatchers.Main
