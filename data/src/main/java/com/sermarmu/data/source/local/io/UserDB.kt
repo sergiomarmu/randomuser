@@ -48,6 +48,7 @@ data class UserDB(
 
 suspend fun Iterable<UserDB>.toUser() = asFlow().map {
     User(
+        id = it.id,
         uuid = it.uuid,
         gender = if (it.gender == FEMALE)
             User.Gender.FEMALE

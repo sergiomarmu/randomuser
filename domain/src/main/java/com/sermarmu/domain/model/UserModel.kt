@@ -14,6 +14,7 @@ import java.time.format.DateTimeFormatter
 
 @Parcelize
 data class UserModel(
+    val id: Int,
     val uuid: String,
     val gender: Gender,
     val name: SurName,
@@ -65,24 +66,30 @@ data class UserModel(
 }
 
 val UserModel.genderFormat: String
-    get() = when (this.gender) {
+    get() = when (gender) {
         UserModel.Gender.FEMALE -> FEMALE
         UserModel.Gender.MALE -> MALE
     }
 
 val UserModel.dateRegisteredFormat: String
     @SuppressLint("SimpleDateFormat")
-    get() = OffsetDateTime.parse(this.registered.date)
+    get() = OffsetDateTime.parse(registered.date)
         .format(
             DateTimeFormatter.ofPattern("yyyy-MM-dd")
         )
 
+val UserModel.streetFormat: String
+    get() = "${location.street.number} ${location.street.name}"
+
 
 suspend fun Iterable<User>.toUserModel() = asFlow().map {
-
     UserModel(
+        id = it.id,
         uuid = it.uuid,
-        gender = UserModel.Gender.FEMALE,
+        gender = when (it.gender) {
+            User.Gender.FEMALE -> UserModel.Gender.FEMALE
+            User.Gender.MALE -> UserModel.Gender.MALE
+        },
         name = UserModel.SurName(
             first = it.name.first,
             last = it.name.last
@@ -106,9 +113,13 @@ suspend fun Iterable<User>.toUserModel() = asFlow().map {
     )
 }.toList()
 
-suspend fun User.toUserModel() = UserModel(
+fun User.toUserModel() = UserModel(
+    id = this.id,
     uuid = this.uuid,
-    gender = UserModel.Gender.FEMALE,
+    gender = when (this.gender) {
+        User.Gender.FEMALE -> UserModel.Gender.FEMALE
+        User.Gender.MALE -> UserModel.Gender.MALE
+    },
     name = UserModel.SurName(
         first = this.name.first,
         last = this.name.last
@@ -133,8 +144,12 @@ suspend fun User.toUserModel() = UserModel(
 
 suspend fun Iterable<UserModel>.toUser() = asFlow().map {
     User(
+        id = it.id,
         uuid = it.uuid,
-        gender = User.Gender.FEMALE,
+        gender = when (it.gender) {
+            UserModel.Gender.FEMALE -> User.Gender.FEMALE
+            UserModel.Gender.MALE -> User.Gender.MALE
+        },
         name = User.SurName(
             first = it.name.first,
             last = it.name.last
@@ -159,9 +174,13 @@ suspend fun Iterable<UserModel>.toUser() = asFlow().map {
 }.toList()
 
 
-suspend fun UserModel.toUser() = User(
+fun UserModel.toUser() = User(
+    id = this.id,
     uuid = this.uuid,
-    gender = User.Gender.FEMALE,
+    gender = when (this.gender) {
+        UserModel.Gender.FEMALE -> User.Gender.FEMALE
+        UserModel.Gender.MALE -> User.Gender.MALE
+    },
     name = User.SurName(
         first = this.name.first,
         last = this.name.last

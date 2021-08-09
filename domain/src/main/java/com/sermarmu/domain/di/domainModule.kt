@@ -5,9 +5,11 @@ import org.koin.dsl.module
 
 val domainModule = module {
 
-    single<UserInteractor> { UserInteractorImpl(get()) }
+    single<UserInteractor> { UserInteractorImpl(get(), get()) }
 
     single<NetworkInteractor> { NetworkInteractorImpl(get()) }
+
+    single<LocalInteractor> { LocalInteractorImpl(get()) }
 }
 
 // region interactor
@@ -19,3 +21,9 @@ private fun provideUserInteractor(
 private fun provideNetworkInteractor(
     networkInteractor: NetworkInteractorImpl
 ): NetworkInteractor = networkInteractor
+
+private fun provideLocalInteractor(
+    localInteractor: LocalInteractorImpl
+): LocalInteractor = localInteractor
+
+// endregion interactor

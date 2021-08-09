@@ -16,7 +16,7 @@
         android:padding="@dimen/default_padding">
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/aciv_image_charactermodel"
+            android:id="@+id/aciv_image_user"
             android:layout_width="75dp"
             android:layout_height="match_parent" />
 
@@ -33,7 +33,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
-                tools:text="Sergio" />
+                tools:text="First" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/mtv_surname_user"
@@ -41,7 +41,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
-                tools:text="Martínez Mulero" />
+                tools:text="Surname" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/mtv_email_user"

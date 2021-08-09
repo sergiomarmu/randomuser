@@ -74,6 +74,7 @@ data class UserOutput(
 
 suspend fun Iterable<UserOutput>.toUser() = asFlow().map {
     User(
+        id = 0,
         uuid = it.login.uuid,
         gender = when (it.gender) {
             UserOutput.Gender.FEMALE ->

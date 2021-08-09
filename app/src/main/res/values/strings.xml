@@ -1,3 +1,29 @@
 <resources>
-    <string name="app_name">RandomUser</string>
+    <string name="app_name">Random User</string>
+
+    <!-- region user fragment -->
+    <string name="user_loading_button">ADD USERS</string>
+    <string name="user_header_adapter_title">Users</string>
+    <string name="user_search_hint">Search by Name</string>
+    <string name="user_no_users_available">Oops, no users found!</string>
+    <!-- endregion user fragment -->
+
+    <!-- region user detail fragment -->
+    <string name="first_name_hint">First Name</string>
+    <string name="last_name_hint">Last Name</string>
+    <string name="email_hint">Email</string>
+    <string name="date_hint">Date</string>
+    <string name="gender_hint">Gender</string>
+    <string name="street_hint">Street</string>
+    <string name="state_hint">State</string>
+    <string name="city_hint">City</string>
+    <string name="user_detail_delete_button">DELETE</string>
+
+    <!-- endregion user detail fragment -->
+
+    <!-- region error -->
+    <string name="error_no_internet_connection">Oops no internet connection!</string>
+    <string name="error_unknown">Oops an error occurred!</string>
+    <!-- endregion error -->
+
 </resources>

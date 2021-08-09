@@ -5,15 +5,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.sermarmu.domain.model.dateRegisteredFormat
 import com.sermarmu.domain.model.genderFormat
+import com.sermarmu.domain.model.streetFormat
 import com.sermarmu.randomuser.R
 import com.sermarmu.randomuser.databinding.UserDetailFragmentBinding
 import com.sermarmu.randomuser.extensions.loadImageFromUrlWithRadius
+import com.sermarmu.randomuser.extensions.readOnlyMode
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class UserDetailFragment : BottomSheetDialogFragment() {
+
+    private val viewModel: UserViewModel
+            by sharedViewModel<UserViewModelImpl>()
 
     private val args: UserDetailFragmentArgs by navArgs()
 
@@ -49,15 +56,20 @@ class UserDetailFragment : BottomSheetDialogFragment() {
             acivImageUserDetail.loadImageFromUrlWithRadius(
                 args.userModel.picture.large
             )
-            tieFirstNameUserDetail.setText(args.userModel.name.first)
-            tieLastNameUserDetail.setText(args.userModel.name.last)
-            tieGenderUserDetail.setText(args.userModel.genderFormat)
-            tieEmailUserDetail.setText(args.userModel.email)
-            tieStreetUserDetail.setText(args.userModel.location.street.name)
-            tieStateUserDetail.setText(args.userModel.location.state)
-            tieCityUserDetail.setText(args.userModel.location.city)
-            tieRegisterDateUserDetail.setText(args.userModel.dateRegisteredFormat)
+            tieFirstNameUserDetail.readOnlyMode(args.userModel.name.first)
+            tieLastNameUserDetail.readOnlyMode(args.userModel.name.last)
+            tieEmailUserDetail.readOnlyMode(args.userModel.email)
+            tieRegisterDateUserDetail.readOnlyMode(args.userModel.dateRegisteredFormat)
+            tieGenderUserDetail.readOnlyMode(args.userModel.genderFormat)
+            tieStreetUserDetail.readOnlyMode(args.userModel.streetFormat)
+            tieStateUserDetail.readOnlyMode(args.userModel.location.state)
+            tieCityUserDetail.readOnlyMode(args.userModel.location.city)
+
             mbDeleteUserDetail.setOnClickListener {
+                viewModel.onUserRemoveAction(
+                    args.userModel
+                )
+                findNavController().popBackStack()
             }
         }
     }

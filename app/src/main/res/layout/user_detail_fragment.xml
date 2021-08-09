@@ -11,6 +11,7 @@
         android:id="@+id/aciv_image_user_detail"
         android:layout_width="150dp"
         android:layout_height="150dp"
+        android:layout_marginHorizontal="@dimen/default_horizontal_margin"
         android:layout_marginTop="@dimen/default_marginTop"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -23,7 +24,7 @@
         android:layout_gravity="start"
         android:layout_marginHorizontal="@dimen/default_horizontal_margin"
         android:layout_marginTop="@dimen/default_marginTop"
-        android:hint="First Name"
+        android:hint="@string/first_name_hint"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/aciv_image_user_detail"
         app:layout_constraintTop_toTopOf="@id/aciv_image_user_detail">
@@ -33,7 +34,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
-            android:enabled="false"
             tools:text="Sergio" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -46,7 +46,7 @@
         android:layout_gravity="start"
         android:layout_marginHorizontal="@dimen/default_horizontal_margin"
         android:layout_marginTop="@dimen/default_marginTop"
-        android:hint="Last Name"
+        android:hint="@string/last_name_hint"
         app:layout_constraintBottom_toBottomOf="@id/aciv_image_user_detail"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/aciv_image_user_detail"
@@ -57,7 +57,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
-            android:enabled="false"
             tools:text="Martínez" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -68,8 +67,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/default_horizontal_margin"
-        android:layout_marginTop="8dp"
-        android:hint="Email"
+        android:layout_marginTop="@dimen/default_vertical_margin"
+        android:hint="@string/email_hint"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/aciv_image_user_detail">
@@ -78,7 +77,6 @@
             android:id="@+id/tie_email_user_detail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:enabled="false"
             tools:text="fakeemail@guugle.com" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -89,8 +87,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/default_horizontal_margin"
-        android:layout_marginTop="8dp"
-        android:hint="Date"
+        android:layout_marginTop="@dimen/default_vertical_margin"
+        android:hint="@string/date_hint"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/til_email_user_detail"
         app:layout_constraintEnd_toStartOf="@id/til_gender_user_detail">
@@ -99,7 +97,6 @@
             android:id="@+id/tie_register_date_user_detail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:enabled="false"
             tools:text="0000/00/00" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -110,8 +107,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/default_horizontal_margin"
-        android:layout_marginTop="8dp"
-        android:hint="Gender"
+        android:layout_marginTop="@dimen/default_vertical_margin"
+        android:hint="@string/gender_hint"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/til_email_user_detail"
         app:layout_constraintStart_toEndOf="@id/til_register_date_user_detail">
@@ -120,7 +117,6 @@
             android:id="@+id/tie_gender_user_detail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:enabled="false"
             tools:text="Male" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -131,8 +127,9 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="start"
+        android:layout_marginTop="@dimen/default_vertical_margin"
         android:layout_marginHorizontal="@dimen/default_horizontal_margin"
-        android:hint="Street"
+        android:hint="@string/street_hint"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/til_register_date_user_detail">
@@ -141,7 +138,6 @@
             android:id="@+id/tie_street_user_detail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:enabled="false"
             tools:text="Fake Street 123" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -153,8 +149,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="start"
         android:layout_marginHorizontal="@dimen/default_horizontal_margin"
-        android:layout_marginTop="8dp"
-        android:hint="State"
+        android:layout_marginTop="@dimen/default_vertical_margin"
+        android:hint="@string/state_hint"
         app:layout_constraintEnd_toStartOf="@id/til_city_user_detail"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/til_street_user_detail">
@@ -163,8 +159,6 @@
             android:id="@+id/tie_state_user_detail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:enabled="false"
-            android:maxLines="1"
             tools:text="Barcelona" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -176,8 +170,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="start"
         android:layout_marginHorizontal="@dimen/default_horizontal_margin"
-        android:layout_marginTop="8dp"
-        android:hint="City"
+        android:layout_marginTop="@dimen/default_vertical_margin"
+        android:hint="@string/city_hint"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/til_state_user_detail"
         app:layout_constraintTop_toBottomOf="@id/til_street_user_detail">
@@ -186,7 +180,6 @@
             android:id="@+id/tie_city_user_detail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:enabled="false"
             tools:text="Barcelona" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -195,8 +188,8 @@
         android:id="@+id/mb_delete_user_detail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Delete"
+        android:layout_marginTop="@dimen/default_vertical_margin"
+        android:text="@string/user_detail_delete_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/til_state_user_detail" />
