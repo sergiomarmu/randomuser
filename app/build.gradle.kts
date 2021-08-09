@@ -1,15 +1,19 @@
-import ModuleApp.androidMaterialDesign
-import ModuleApp.androidXAppCompat
-import ModuleApp.androidXConstraintLayout
-import ModuleApp.androidXCore
-import ModuleApp.androidXTestEspresso
-import ModuleApp.androidXTestExt
-import ModuleApp.jUnit
+import ModuleApp.androidMaterialDesignVersion
+import ModuleApp.androidXAppCompatVersion
+import ModuleApp.androidXConstraintLayoutVersion
+import ModuleApp.androidXCoreVersion
+import ModuleApp.glideVersion
+import ModuleApp.koinVersion
+import ModuleApp.androidRecyclerViewVersion
+import ModuleApp.androidXLifeCycle
+import ModuleApp.androidXNavigation
 import RandomUser.kotlinVersion
 
 plugins {
     id("com.android.application")
     id("kotlin-android")
+    id("kotlin-android-extensions")
+    id("kotlin-kapt")
 }
 
 android {
@@ -52,22 +56,33 @@ android {
 }
 
 dependencies {
+
+    implementation(project(":core"))
+    implementation(project(":domain"))
+    implementation(project(":data"))
+
     implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
 
+    // region koin
+    implementation("io.insert-koin:koin-android:$koinVersion")
+    // endregion koin
 
     // region androidx
-    implementation("androidx.core:core-ktx:$androidXCore")
-    implementation("androidx.appcompat:appcompat:$androidXAppCompat")
-    implementation("androidx.constraintlayout:constraintlayout:$androidXConstraintLayout")
+    implementation("androidx.core:core-ktx:$androidXCoreVersion")
+    implementation("androidx.appcompat:appcompat:$androidXAppCompatVersion")
+    implementation("androidx.constraintlayout:constraintlayout:$androidXConstraintLayoutVersion")
+    implementation("androidx.recyclerview:recyclerview:$androidRecyclerViewVersion")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$androidXLifeCycle")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:$androidXLifeCycle")
+    implementation("androidx.navigation:navigation-fragment-ktx:$androidXNavigation")
+    implementation("androidx.navigation:navigation-ui-ktx:$androidXNavigation")
     // endregion androidx
 
     // region androidMaterialDesign
-    implementation("com.google.android.material:material:$androidMaterialDesign")
+    implementation("com.google.android.material:material:$androidMaterialDesignVersion")
     // endregion androidMaterialDesign
 
-    // region test
-    testImplementation("junit:junit:$jUnit")
-    androidTestImplementation("androidx.test.ext:junit:$androidXTestExt")
-    androidTestImplementation("androidx.test.espresso:espresso-core:$androidXTestEspresso")
-    // endregion test
+    // region glide
+    implementation("com.github.bumptech.glide:glide:$glideVersion")
+    // endregion glide
 }

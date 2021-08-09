@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_user_graph"
+    app:startDestination="@+id/dest_user_fragment">
+
+    <fragment android:id="@+id/dest_user_fragment"
+        android:name="com.sermarmu.randomuser.ui.feature.user.UserFragment"
+        tools:layout="@layout/user_fragment" />
+
+
+</navigation>
