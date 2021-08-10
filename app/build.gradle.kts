@@ -1,12 +1,22 @@
 import ModuleApp.androidMaterialDesignVersion
+import ModuleApp.androidRecyclerViewVersion
 import ModuleApp.androidXAppCompatVersion
 import ModuleApp.androidXConstraintLayoutVersion
 import ModuleApp.androidXCoreVersion
-import ModuleApp.glideVersion
-import ModuleApp.koinVersion
-import ModuleApp.androidRecyclerViewVersion
+import ModuleApp.androidXEspressoCoreVersion
+import ModuleApp.androidXFragmentVersion
 import ModuleApp.androidXLifeCycle
 import ModuleApp.androidXNavigation
+import ModuleApp.androidXNavigationTesting
+import ModuleApp.glideVersion
+import ModuleApp.googleTruthVersion
+import ModuleApp.koinVersion
+import ModuleApp.kotlinXCoroutinesTestVersion
+import ModuleApp.mockitoVersion
+import ModuleApp.mockkVersion
+import ModuleApp.okkHttpVersion
+import ModuleCore.coroutinesVersion
+import ModuleData.androidXJunitVersion
 import RandomUser.kotlinVersion
 
 plugins {
@@ -62,6 +72,7 @@ dependencies {
     implementation(project(":data"))
 
     implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
 
     // region koin
     implementation("io.insert-koin:koin-android:$koinVersion")
@@ -85,4 +96,19 @@ dependencies {
     // region glide
     implementation("com.github.bumptech.glide:glide:$glideVersion")
     // endregion glide
+
+    // region test
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinXCoroutinesTestVersion")
+    implementation("com.google.truth:truth:$googleTruthVersion")
+    implementation("io.mockk:mockk:$mockkVersion")
+    androidTestImplementation("androidx.test.ext:junit:$androidXJunitVersion")
+    androidTestImplementation("androidx.test.espresso:espresso-core:$androidXEspressoCoreVersion")
+    androidTestImplementation("androidx.test.espresso:espresso-contrib:$androidXEspressoCoreVersion")
+    debugImplementation("androidx.fragment:fragment-testing:$androidXFragmentVersion")
+    androidTestImplementation("androidx.navigation:navigation-testing:$androidXNavigationTesting")
+    // It's needed when we called our exceptions in Data
+    implementation("com.squareup.okhttp3:okhttp:$okkHttpVersion")
+    // https://site.mockito.org/
+    androidTestImplementation("org.mockito:mockito-android:$mockitoVersion")
+    // endregion test
 }

@@ -1,5 +1,6 @@
 package com.sermarmu.randomuser.ui.feature.user
 
+import androidx.lifecycle.viewModelScope
 import com.sermarmu.core.base.BaseViewModel
 import com.sermarmu.core.extension.launchInMain
 import com.sermarmu.domain.interactor.UserInteractor
@@ -106,7 +107,7 @@ class UserViewModelImpl(
     private fun launchUserAction(
         action: suspend () -> Flow<List<UserModel>>
     ) {
-        this@UserViewModelImpl.launch {
+        this@UserViewModelImpl.viewModelScope.launch {
             action.invoke()
                 .map {
                     UserState.Success(it)

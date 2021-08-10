@@ -4,7 +4,6 @@ package com.sermarmu.domain.interactor
 import com.sermarmu.domain.model.UserModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 
 interface UserInteractor {
@@ -27,8 +26,9 @@ class UserInteractorImpl(
     private val networkInteractor: NetworkInteractor
 ) : UserInteractor {
 
-    override suspend fun retrieveDBUsersFlow(): Flow<List<UserModel>> =
-        flowOf(localInteractor.retrieveAllUsers())
+    override suspend fun retrieveDBUsersFlow(): Flow<List<UserModel>> = flow {
+            emit(localInteractor.retrieveAllUsers())
+        }
 
     override suspend fun retrieveUsersFlow(): Flow<List<UserModel>> = flow {
         emit(
@@ -42,12 +42,12 @@ class UserInteractorImpl(
 
     override suspend fun retrieveUsersByQueryFlow(
         query: String
-    ): Flow<List<UserModel>> = flowOf(
+    ): Flow<List<UserModel>> = flow {
         when {
-            query.isEmpty() -> localInteractor.retrieveAllUsers()
-            else -> localInteractor.findUserByName(query)
+            query.isEmpty() -> emit(localInteractor.retrieveAllUsers())
+            else -> emit(localInteractor.findUserByName(query))
         }
-    )
+    }
 
     override suspend fun deleteDBUserFlow(
         userModel: UserModel
