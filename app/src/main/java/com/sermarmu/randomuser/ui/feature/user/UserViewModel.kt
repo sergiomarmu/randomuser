@@ -1,7 +1,7 @@
 package com.sermarmu.randomuser.ui.feature.user
 
-import androidx.lifecycle.viewModelScope
 import com.sermarmu.core.base.BaseViewModel
+import com.sermarmu.core.extension.launchInMain
 import com.sermarmu.domain.interactor.UserInteractor
 import com.sermarmu.domain.model.UserModel
 import kotlinx.coroutines.flow.*
@@ -36,7 +36,7 @@ abstract class UserViewModel : BaseViewModel() {
     abstract fun onLoadMoreUsersAction()
 
     /**
-     * User request for search users through a query
+     * User request for search users by name through a query
      */
     abstract fun onQueryTypedAction(
         query: String
@@ -78,7 +78,7 @@ class UserViewModelImpl(
     ) {
         launchUserAction {
             userInteractor
-                .retrieveUsersWithQueryFlow(
+                .retrieveUsersByQueryFlow(
                     query = query
                 )
         }
@@ -89,7 +89,7 @@ class UserViewModelImpl(
     ) {
         launchUserAction {
             userInteractor
-                .deleteDBUser(
+                .deleteDBUserFlow(
                     userModel = userModel
                 )
         }
@@ -106,15 +106,17 @@ class UserViewModelImpl(
     private fun launchUserAction(
         action: suspend () -> Flow<List<UserModel>>
     ) {
-        this@UserViewModelImpl
-            .viewModelScope.launch {
-                (try {
-                    UserState.Success(action.invoke().first())
-                } catch (e: Exception) {
-                    UserState.Failure(e)
-                }).let {
-                    uiStateMutableSharedFlow.emit(it)
+        this@UserViewModelImpl.launch {
+            action.invoke()
+                .map {
+                    UserState.Success(it)
+                }.catch<UserState> { e ->
+                    emit(UserState.Failure(e))
+                }.collect {
+                    launchInMain {
+                        uiStateMutableSharedFlow.emit(it)
+                    }
                 }
-            }
+        }
     }
 }

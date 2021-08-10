@@ -15,9 +15,9 @@ interface LocalApi {
     @Query("SELECT * FROM users ")
     suspend fun retrieveAllUsers(): List<UserDB>
 
-    @Query("SELECT * FROM users WHERE firstName LIKE :search")
-    suspend fun findUserWithName(
-        search: String
+    @Query("SELECT * FROM users WHERE firstName LIKE :query")
+    suspend fun findUserByName(
+        query: String
     ): List<UserDB>
 
 

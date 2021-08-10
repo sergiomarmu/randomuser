@@ -13,7 +13,6 @@ import com.sermarmu.randomuser.databinding.UserAdapterBinding
 import com.sermarmu.randomuser.databinding.UserAdapterHeaderBinding
 import com.sermarmu.randomuser.databinding.UserFragmentBinding
 import com.sermarmu.randomuser.extensions.debounce
-import com.sermarmu.randomuser.extensions.gone
 import com.sermarmu.randomuser.extensions.loadImageFromUrlWithRadius
 import kotlinx.coroutines.flow.collectLatest
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -108,7 +107,7 @@ class UserFragment : AppBaseFragment() {
     private fun onUserState(
         state: UserViewModel.UserState
     ) {
-        binding.lpiUsers.gone()
+        binding.lpiUsers.hide()
         when (state) {
             is VM_UserState.Idle -> {
                 // Nothing to do

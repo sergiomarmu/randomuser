@@ -1,10 +1,7 @@
 package com.sermarmu.domain.interactor
 
-import com.sermarmu.data.repository.LocalRepository
 import com.sermarmu.domain.model.UserModel
-import com.sermarmu.domain.model.toUser
-import com.sermarmu.domain.model.toUserModel
-
+import com.sermarmu.domain.repository.LocalRepository
 
 interface LocalInteractor {
 
@@ -14,8 +11,8 @@ interface LocalInteractor {
 
     suspend fun retrieveAllUsers(): List<UserModel>
 
-    suspend fun findUserWithName(
-        search: String
+    suspend fun findUserByName(
+        query: String
     ): List<UserModel>
 
     suspend fun clearAllUsers()
@@ -33,16 +30,16 @@ class LocalInteractorImpl(
         user: List<UserModel>
     ) {
         localRepository.insertAllUsers(
-            users = user.toUser()
+            users = user
         )
     }
 
     override suspend fun retrieveAllUsers(): List<UserModel> =
-        localRepository.retrieveAllUsers().toUserModel()
+        localRepository.retrieveAllUsers()
 
-    override suspend fun findUserWithName(
-        search: String
-    ): List<UserModel> = localRepository.findUserWithName(search).toUserModel()
+    override suspend fun findUserByName(
+        query: String
+    ): List<UserModel> = localRepository.findUserByName(query)
 
 
     override suspend fun clearAllUsers() {
@@ -53,7 +50,7 @@ class LocalInteractorImpl(
         userModel: UserModel
     ) {
         localRepository.deleteUser(
-            user =  userModel.toUser()
+            user =  userModel
         )
     }
 }

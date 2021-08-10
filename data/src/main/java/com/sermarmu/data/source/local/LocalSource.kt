@@ -1,26 +1,27 @@
 package com.sermarmu.data.source.local
 
 
-import com.sermarmu.data.source.local.io.UserDB
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import com.sermarmu.core.extension.launchInIO
+import com.sermarmu.data.entity.User
+import com.sermarmu.data.entity.toUserDB
+import com.sermarmu.data.source.local.io.toUser
 
 interface LocalSource {
 
     suspend fun insertAllUsers(
-        usersDb: List<UserDB>
+        users: List<User>
     )
 
-    suspend fun retrieveAllUsers(): List<UserDB>
+    suspend fun retrieveAllUsers(): List<User>
 
-    suspend fun findUserWithName(
-        search: String
-    ): List<UserDB>
+    suspend fun findUserByName(
+        query: String
+    ): List<User>
 
     suspend fun clearAllUsers()
 
     suspend fun deleteUser(
-        userDb: UserDB
+        user: User
     )
 }
 
@@ -29,39 +30,39 @@ class LocalSourceImpl(
 ) : LocalSource {
 
     override suspend fun insertAllUsers(
-        usersDb: List<UserDB>
+        users: List<User>
     ) {
-        withContext(Dispatchers.IO) {
+        launchInIO {
             localApi.insertAllUsers(
-                users = usersDb
+                users = users.toUserDB()
             )
         }
     }
 
-    override suspend fun retrieveAllUsers(): List<UserDB> = withContext(Dispatchers.IO) {
-        localApi.retrieveAllUsers()
+    override suspend fun retrieveAllUsers(): List<User> = launchInIO {
+        localApi.retrieveAllUsers().toUser()
     }
 
-    override suspend fun findUserWithName(
-        search: String
-    ): List<UserDB> = withContext(Dispatchers.IO) {
-        localApi.findUserWithName(
-            "$search%"
-        )
+    override suspend fun findUserByName(
+        query: String
+    ): List<User> = launchInIO {
+        localApi.findUserByName(
+            "$query%"
+        ).toUser()
     }
 
     override suspend fun clearAllUsers() {
-        withContext(Dispatchers.IO) {
+        launchInIO {
             localApi.clearAllUsers()
         }
     }
 
     override suspend fun deleteUser(
-        userDb: UserDB
+        user: User
     ) {
-        withContext(Dispatchers.IO) {
+        launchInIO {
             localApi.deleteUsers(
-                user = userDb
+                user = user.toUserDB()
             )
         }
     }

@@ -1,59 +1,42 @@
 package com.sermarmu.data.repository
 
-import com.sermarmu.data.entity.User
-import com.sermarmu.data.entity.toUserDB
+import com.sermarmu.data.entity.toUser
+import com.sermarmu.data.entity.toUserModel
 import com.sermarmu.data.source.local.LocalSource
-import com.sermarmu.data.source.local.io.toUser
+import com.sermarmu.domain.model.UserModel
+import com.sermarmu.domain.repository.LocalRepository
 
-interface LocalRepository {
-
-    suspend fun insertAllUsers(
-        users: List<User>
-    )
-
-    suspend fun retrieveAllUsers(): List<User>
-
-    suspend fun findUserWithName(
-        search: String
-    ): List<User>
-
-    suspend fun clearAllUsers()
-
-    suspend fun deleteUser(
-        user: User
-    )
-}
 
 class LocalRepositoryImpl(
     private val localSource: LocalSource
 ) : LocalRepository {
 
     override suspend fun insertAllUsers(
-        users: List<User>
+        users: List<UserModel>
     ) {
         localSource.insertAllUsers(
-            usersDb = users.toUserDB()
+            users = users.toUser()
         )
     }
 
-    override suspend fun retrieveAllUsers(): List<User> =
+    override suspend fun retrieveAllUsers(): List<UserModel> =
         localSource.retrieveAllUsers()
-            .toUser()
+            .toUserModel()
 
-    override suspend fun findUserWithName(
-        search: String
-    ): List<User> = localSource.findUserWithName(search)
-        .toUser()
+    override suspend fun findUserByName(
+        query: String
+    ): List<UserModel> = localSource.findUserByName(query)
+        .toUserModel()
 
     override suspend fun clearAllUsers() {
         localSource.clearAllUsers()
     }
 
     override suspend fun deleteUser(
-        user : User
+        user: UserModel
     ) {
         localSource.deleteUser(
-            userDb = user.toUserDB()
+            user = user.toUser()
         )
     }
 }

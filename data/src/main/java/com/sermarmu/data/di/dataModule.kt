@@ -2,9 +2,7 @@ package com.sermarmu.data.di
 
 import android.content.Context
 import androidx.room.Room
-import com.sermarmu.data.repository.LocalRepository
 import com.sermarmu.data.repository.LocalRepositoryImpl
-import com.sermarmu.data.repository.NetworkRepository
 import com.sermarmu.data.repository.NetworkRepositoryImpl
 import com.sermarmu.data.source.local.LocalApi
 import com.sermarmu.data.source.local.LocalDatabase
@@ -13,20 +11,26 @@ import com.sermarmu.data.source.local.LocalSourceImpl
 import com.sermarmu.data.source.network.NetworkApi
 import com.sermarmu.data.source.network.NetworkSource
 import com.sermarmu.data.source.network.NetworkSourceImpl
+import com.sermarmu.domain.repository.LocalRepository
+import com.sermarmu.domain.repository.NetworkRepository
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.BuildConfig
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
+
+const val RETROFIT_API_BASE_URL = "retrofit_api_base_url"
+const val ROOM_DATABASE_NAME = "room_database_name"
 
 
 val dataModule = module {
 
     factory { provideOkkHttpClient() }
 
-    factory { provideRetrofit(get()) }
+    factory { provideRetrofit(get(), get(named(RETROFIT_API_BASE_URL))) }
 
     factory { provideNetworkApi(get()) }
 
@@ -36,7 +40,7 @@ val dataModule = module {
 
     factory { provideLocalDatabase(get()) }
 
-    factory { provideRoomDatabase(get()) }
+    factory { provideRoomDatabase(get(), get(named(ROOM_DATABASE_NAME))) }
 
     single<LocalSource> { LocalSourceImpl(get()) }
 
@@ -46,6 +50,8 @@ val dataModule = module {
 
 // region network
 // region retrofit
+private const val OKK_HTTP_CLIENT_TIMEOUT = 10L
+
 private fun provideOkkHttpClient(): OkHttpClient = OkHttpClient.Builder()
     .addInterceptor(
         HttpLoggingInterceptor()
@@ -54,18 +60,19 @@ private fun provideOkkHttpClient(): OkHttpClient = OkHttpClient.Builder()
                     HttpLoggingInterceptor.Level.BODY
                 else HttpLoggingInterceptor.Level.NONE
             )
-    ).connectTimeout(10, TimeUnit.SECONDS)
-    .readTimeout(10, TimeUnit.SECONDS)
-    .writeTimeout(10, TimeUnit.SECONDS)
+    ).connectTimeout(OKK_HTTP_CLIENT_TIMEOUT, TimeUnit.SECONDS)
+    .readTimeout(OKK_HTTP_CLIENT_TIMEOUT, TimeUnit.SECONDS)
+    .writeTimeout(OKK_HTTP_CLIENT_TIMEOUT, TimeUnit.SECONDS)
     .build()
 
 private fun provideRetrofit(
-    okHttpClient: OkHttpClient
+    okHttpClient: OkHttpClient,
+    baseUrl: String
 ): Retrofit = Retrofit.Builder()
     .addConverterFactory(
         GsonConverterFactory.create()
     )
-    .baseUrl("https://randomuser.me/")
+    .baseUrl(baseUrl)
     .client(okHttpClient)
     .build()
 
@@ -73,18 +80,6 @@ private fun provideNetworkApi(
     retrofit: Retrofit
 ): NetworkApi = retrofit.create(NetworkApi::class.java)
 // endregion retrofit
-
-// region source
-private fun provideNetworkSource(
-    networkSource: NetworkSourceImpl
-): NetworkSource = networkSource
-// endregion source
-
-// region repository
-private fun provideNetworkRepository(
-    networkRepository: NetworkRepositoryImpl
-): NetworkRepository = networkRepository
-// endregion repository
 // endregion network
 
 // region local
@@ -94,23 +89,12 @@ fun provideLocalDatabase(
 ): LocalApi = localDatabase.localApi()
 
 fun provideRoomDatabase(
-    context: Context
+    context: Context,
+    nameRoom: String
 ) = Room.databaseBuilder(
     context,
     LocalDatabase::class.java,
-    "breakingbad-database"
+    nameRoom
 ).build()
 // endregion room
-
-// region source
-fun provideLocalSource(
-    localSource: LocalSourceImpl
-): LocalSource = localSource
-// endregion source
-
-// region repository
-fun provideLocalRepository(
-    localRepository: LocalRepositoryImpl
-): LocalRepository = localRepository
-// endregion repository
 // endregion local

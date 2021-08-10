@@ -1,20 +1,16 @@
 package com.sermarmu.data.repository
 
-import com.sermarmu.data.entity.User
+import com.sermarmu.data.entity.toUserModel
 import com.sermarmu.data.source.network.NetworkSource
-import com.sermarmu.data.source.network.io.toUser
+import com.sermarmu.domain.model.UserModel
+import com.sermarmu.domain.repository.NetworkRepository
 
-
-interface NetworkRepository {
-    suspend fun retrieveUsers(): List<User>
-}
 
 class NetworkRepositoryImpl(
     private val networkSource: NetworkSource
 ) : NetworkRepository {
 
-    override suspend fun retrieveUsers(): List<User> =
+    override suspend fun retrieveUsers(): List<UserModel> =
         networkSource.retrieveUsers()
-            .users
-            .toUser()
+            .toUserModel()
 }

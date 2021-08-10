@@ -1,7 +1,7 @@
+@file:Suppress("EXPERIMENTA_API_USAGE")
 package com.sermarmu.domain.interactor
 
 import com.sermarmu.domain.model.UserModel
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
@@ -13,16 +13,15 @@ interface UserInteractor {
 
     suspend fun retrieveUsersFlow(): Flow<List<UserModel>>
 
-    suspend fun retrieveUsersWithQueryFlow(
+    suspend fun retrieveUsersByQueryFlow(
         query: String
     ): Flow<List<UserModel>>
 
-    suspend fun deleteDBUser(
+    suspend fun deleteDBUserFlow(
         userModel: UserModel
     ): Flow<List<UserModel>>
 }
 
-@ExperimentalCoroutinesApi
 class UserInteractorImpl(
     private val localInteractor: LocalInteractor,
     private val networkInteractor: NetworkInteractor
@@ -41,16 +40,16 @@ class UserInteractorImpl(
         localInteractor.retrieveAllUsers()
     }
 
-    override suspend fun retrieveUsersWithQueryFlow(
+    override suspend fun retrieveUsersByQueryFlow(
         query: String
     ): Flow<List<UserModel>> = flowOf(
         when {
             query.isEmpty() -> localInteractor.retrieveAllUsers()
-            else -> localInteractor.findUserWithName(query)
+            else -> localInteractor.findUserByName(query)
         }
     )
 
-    override suspend fun deleteDBUser(
+    override suspend fun deleteDBUserFlow(
         userModel: UserModel
     ): Flow<List<UserModel>> = localInteractor.deleteUser(
         userModel = userModel

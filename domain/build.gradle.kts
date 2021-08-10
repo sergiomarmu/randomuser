@@ -43,7 +43,6 @@ android {
 
 dependencies {
     implementation(project(":core"))
-    implementation(project(":data"))
 
     implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
 

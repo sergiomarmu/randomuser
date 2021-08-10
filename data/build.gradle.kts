@@ -47,6 +47,9 @@ android {
 }
 
 dependencies {
+    implementation(project(":core"))
+    implementation(project(":domain"))
+
     implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
 
     // region koin
