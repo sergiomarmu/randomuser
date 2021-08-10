@@ -9,4 +9,10 @@ object ModuleDomain {
     const val coroutinesVersion = "1.4.0"
     // endregion coroutines
 
+    // region test
+    const val kotlinXCoroutinesTestVersion = "1.5.1"
+    const val googleTruthVersion = "1.1.2"
+    const val mockkVersion = "1.12.0"
+    // endregion test
+
 }

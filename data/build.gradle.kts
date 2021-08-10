@@ -1,7 +1,14 @@
+import ModuleData.androidXJunitVersion
+import ModuleData.androidXTestRunnerVersion
 import ModuleData.coroutinesVersion
+import ModuleData.googleTruthVersion
 import ModuleData.gsonVersion
 import ModuleData.koinVersion
+import ModuleData.kotlinXCoroutinesTestVersion
 import ModuleData.loggingInterceptorVersion
+import ModuleData.mockWebServerVersion
+import ModuleData.mockitoCoreVersion
+import ModuleData.mockkVersion
 import ModuleData.retrofit2ConverterGsonVersion
 import ModuleData.retrofit2Version
 import ModuleData.roomVersion
@@ -31,8 +38,8 @@ android {
         getByName("release") {
             isMinifyEnabled = false
             proguardFiles(
-                    getDefaultProguardFile("proguard-android-optimize.txt"),
-                    "proguard-rules.pro"
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
             )
         }
     }
@@ -82,4 +89,15 @@ dependencies {
     // Test helpers
     testImplementation("androidx.room:room-testing:$roomVersion")
     // endregion room
+
+    // region test
+    testImplementation("com.squareup.okhttp3:mockwebserver:$mockWebServerVersion")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinXCoroutinesTestVersion")
+    implementation("com.google.truth:truth:$googleTruthVersion")
+    implementation("io.mockk:mockk:$mockkVersion")
+    androidTestImplementation("androidx.test.ext:junit:$androidXJunitVersion")
+    androidTestImplementation("androidx.test:runner:$androidXTestRunnerVersion")
+    // see https://site.mockito.org/
+    testImplementation("org.mockito:mockito-core:$mockitoCoreVersion")
+    // endregion test
 }

@@ -1,5 +1,8 @@
 import ModuleDomain.coroutinesVersion
+import ModuleDomain.googleTruthVersion
 import ModuleDomain.koinVersion
+import ModuleDomain.kotlinXCoroutinesTestVersion
+import ModuleDomain.mockkVersion
 import RandomUser.kotlinVersion
 
 plugins {
@@ -53,4 +56,10 @@ dependencies {
     // region coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
     // endregion coroutines
+
+    // region test
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinXCoroutinesTestVersion")
+    implementation("com.google.truth:truth:$googleTruthVersion")
+    implementation("io.mockk:mockk:$mockkVersion")
+    // endregion test
 }

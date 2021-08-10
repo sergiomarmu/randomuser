@@ -22,4 +22,14 @@ object ModuleData {
     const val roomVersion = "2.3.0"
     // endregion room
 
+    // region test
+    const val mockWebServerVersion = "4.9.1"
+    const val kotlinXCoroutinesTestVersion = "1.5.1"
+    const val googleTruthVersion = "1.1.2"
+    const val mockkVersion = "1.12.0"
+    const val androidXTestRunnerVersion = "1.3.0"
+    const val androidXJunitVersion = "1.1.2"
+    const val mockitoCoreVersion = "3.11.0"
+    // endregion test
+
 }
