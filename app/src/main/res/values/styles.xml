@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+        <!-- https://developer.android.com/reference/android/R.attr.html#textDirection  -->
+        <!-- Due to a compatibility with RTL support, views will be showed depend  on mobile locale -->
+        <item name="android:textDirection">locale</item>
+        <item name="android:textAlignment">gravity</item>
+    </style>
+
+    <!-- region bottom sheet -->
+    <!-- https://material.io/components/sheets-bottom/android -->
+    <!-- https://material.io/develop/android/theming/shape -->
+
+    <style name="ThemeOverlay.AppTheme.BottomSheetDialog" parent="@style/ThemeOverlay.MaterialComponents.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/Widget.AppTheme.BottomSheet</item>
+    </style>
+
+    <style name="Widget.AppTheme.BottomSheet" parent="Widget.MaterialComponents.BottomSheet">
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.AppTheme.BottomSheet</item>
+    </style>
+
+    <style name="ShapeAppearanceOverlay.AppTheme.BottomSheet" parent="">
+        <item name="cornerSize">16dp</item>
+        <item name="cornerFamily">rounded</item>
+    </style>
+    <!-- endregion bottom sheet -->
+
+</resources>

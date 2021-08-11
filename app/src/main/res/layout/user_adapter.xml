@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/default_horizontal_margin"
+    android:layout_marginVertical="@dimen/default_vertical_margin"
+    app:cardCornerRadius="32dp"
+    app:cardElevation="3dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/default_padding">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/aciv_image_user"
+            android:layout_width="75dp"
+            android:layout_height="match_parent" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="@dimen/default_horizontal_margin"
+            android:orientation="vertical"
+            android:padding="@dimen/default_padding">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/mtv_name_user"
+                style="@style/TextAppearance.MaterialComponents.Headline5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                tools:text="First" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/mtv_surname_user"
+                style="@style/TextAppearance.MaterialComponents.Subtitle1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                tools:text="Surname" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/mtv_email_user"
+                style="@style/TextAppearance.MaterialComponents.Subtitle1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:inputType="textEmailAddress"
+                tools:text="fakeemail@guugle.com" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/mtv_phone_user"
+                style="@style/TextAppearance.MaterialComponents.Subtitle1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:inputType="number"
+                tools:text="000 000 000" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>
