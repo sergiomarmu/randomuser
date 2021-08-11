@@ -24,7 +24,9 @@ See SOLUTION.md in the root project for more info.
 * Material Components - [Material](https://material.io)
 </br>
 </br>
+
 ## TECHNOLOGIES USED FOR TESTING
+
 * MockK - [MockK](https://mockk.io/)
 * Truth - [Truth](https://truth.dev/)
 * Espresso - [Espresso](https://developer.android.com/training/testing/espresso)
@@ -35,7 +37,9 @@ See SOLUTION.md in the root project for more info.
 All test have been done using AAA pattern (Arrange|Act|Assert)
 </br>
 </br>
+
 ## Others
+
 * Launcher Icon - [LauncherIcon](https://romannurik.github.io/AndroidAssetStudio/index.html)
 * Google Fonts - [GoogleFonts](https://fonts.google.com/icons)
 </br></br>
