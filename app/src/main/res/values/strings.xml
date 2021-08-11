@@ -14,7 +14,7 @@
     <string name="first_name_hint">First Name</string>
     <string name="last_name_hint">SurName</string>
     <string name="email_hint">Email</string>
-    <string name="date_hint">Date</string>
+    <string name="date_hint">Registered Date</string>
     <string name="gender_hint">Gender</string>
     <string name="street_hint">Street</string>
     <string name="state_hint">State</string>
