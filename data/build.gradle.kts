@@ -1,15 +1,23 @@
-import ModuleData.androidMaterialDesign
-import ModuleData.androidXAppCompat
-import ModuleData.androidXConstraintLayout
-import ModuleData.androidXCore
-import ModuleData.androidXTestEspresso
-import ModuleData.androidXTestExt
-import ModuleData.jUnit
+import ModuleData.androidXJunitVersion
+import ModuleData.androidXTestRunnerVersion
+import ModuleData.coroutinesVersion
+import ModuleData.googleTruthVersion
+import ModuleData.gsonVersion
+import ModuleData.koinVersion
+import ModuleData.kotlinXCoroutinesTestVersion
+import ModuleData.loggingInterceptorVersion
+import ModuleData.mockWebServerVersion
+import ModuleData.mockitoCoreVersion
+import ModuleData.mockkVersion
+import ModuleData.retrofit2ConverterGsonVersion
+import ModuleData.retrofit2Version
+import ModuleData.roomVersion
 import RandomUser.kotlinVersion
 
 plugins {
     id("com.android.library")
     id("kotlin-android")
+    id("kotlin-kapt")
 }
 
 android {
@@ -29,8 +37,8 @@ android {
         getByName("release") {
             isMinifyEnabled = false
             proguardFiles(
-                    getDefaultProguardFile("proguard-android-optimize.txt"),
-                    "proguard-rules.pro"
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
             )
         }
     }
@@ -45,10 +53,50 @@ android {
 }
 
 dependencies {
+    implementation(project(":core"))
+    implementation(project(":domain"))
+
     implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
 
+    // region koin
+    implementation("io.insert-koin:koin-android:$koinVersion")
+    // endregion koin
+
+    // region gson
+    implementation("com.google.code.gson:gson:$gsonVersion")
+    // endregion gson
+
+    // region retrofit
+    // see https://square.github.io/retrofit/
+    implementation("com.squareup.retrofit2:retrofit:$retrofit2Version")
+    implementation("com.squareup.okhttp3:logging-interceptor:$loggingInterceptorVersion")
+    implementation("com.squareup.retrofit2:converter-gson:$retrofit2ConverterGsonVersion")
+    // endregion retrofit
+
+    // region coroutines
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
+    // endregion coroutines
+
+
+    // region room
+    // see https://developer.android.com/training/data-storage/room
+    api("androidx.room:room-runtime:$roomVersion")
+    kapt("androidx.room:room-compiler:$roomVersion")
+
+    // Kotlin Extensions and Coroutines support for Room
+    api("androidx.room:room-ktx:$roomVersion")
+    // Test helpers
+    testImplementation("androidx.room:room-testing:$roomVersion")
+    // endregion room
+
     // region test
-    testImplementation("junit:junit:$jUnit")
-    androidTestImplementation("androidx.test.ext:junit:$androidXTestExt")
+    testImplementation("com.squareup.okhttp3:mockwebserver:$mockWebServerVersion")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinXCoroutinesTestVersion")
+    implementation("com.google.truth:truth:$googleTruthVersion")
+    implementation("io.mockk:mockk:$mockkVersion")
+    androidTestImplementation("androidx.test.ext:junit:$androidXJunitVersion")
+    androidTestImplementation("androidx.test:runner:$androidXTestRunnerVersion")
+    // see https://site.mockito.org/
+    testImplementation("org.mockito:mockito-core:$mockitoCoreVersion")
     // endregion test
 }

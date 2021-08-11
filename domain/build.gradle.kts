@@ -1,15 +1,15 @@
-import ModuleDomain.androidMaterialDesign
-import ModuleDomain.androidXAppCompat
-import ModuleDomain.androidXConstraintLayout
-import ModuleDomain.androidXCore
-import ModuleDomain.androidXTestEspresso
-import ModuleDomain.androidXTestExt
-import ModuleDomain.jUnit
+import ModuleDomain.coroutinesVersion
+import ModuleDomain.googleTruthVersion
+import ModuleDomain.koinVersion
+import ModuleDomain.kotlinXCoroutinesTestVersion
+import ModuleDomain.mockkVersion
 import RandomUser.kotlinVersion
 
 plugins {
     id("com.android.library")
     id("kotlin-android")
+    id("kotlin-kapt")
+    id("kotlin-parcelize")
 }
 
 android {
@@ -45,10 +45,21 @@ android {
 }
 
 dependencies {
+    implementation(project(":core"))
+
     implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
 
+    // region koin
+    implementation("io.insert-koin:koin-android:$koinVersion")
+    // endregion koin
+
+    // region coroutines
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
+    // endregion coroutines
+
     // region test
-    testImplementation("junit:junit:$jUnit")
-    androidTestImplementation("androidx.test.ext:junit:$androidXTestExt")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinXCoroutinesTestVersion")
+    implementation("com.google.truth:truth:$googleTruthVersion")
+    implementation("io.mockk:mockk:$mockkVersion")
     // endregion test
 }

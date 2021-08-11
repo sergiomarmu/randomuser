@@ -1,18 +1,35 @@
 object ModuleData {
 
-    // region androidx
-    const val androidXCore = "1.6.0"
-    const val androidXAppCompat = "1.3.1"
-    const val androidXConstraintLayout = "2.1.0"
-    // endregion androidx
+    // region koin
+    const val koinVersion = "3.1.2"
+    // endregion koin
 
-    // region androidMaterialDesign
-    const val androidMaterialDesign = "1.4.0"
-    // endregion androidMaterialDesign
+    // region gson
+    const val gsonVersion = "2.8.6"
+    // endregion gson
+
+    // region retrofit
+    const val retrofit2Version = "2.9.0"
+    const val loggingInterceptorVersion = "4.9.0"
+    const val retrofit2ConverterGsonVersion = "2.9.0"
+    // end region retrofit
+
+    // region coroutines
+    const val coroutinesVersion = "1.4.0"
+    // endregion coroutines
+
+    // region room
+    const val roomVersion = "2.3.0"
+    // endregion room
 
     // region test
-    const val jUnit = "4.+"
-    const val androidXTestExt = "1.1.3"
-    const val androidXTestEspresso= "3.4.0"
+    const val mockWebServerVersion = "4.9.1"
+    const val kotlinXCoroutinesTestVersion = "1.5.1"
+    const val googleTruthVersion = "1.1.2"
+    const val mockkVersion = "1.12.0"
+    const val androidXJunitVersion = "1.1.2"
+    const val androidXTestRunnerVersion = "1.3.0"
+    const val mockitoCoreVersion = "3.11.0"
     // endregion test
+
 }

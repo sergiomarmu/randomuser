@@ -1,0 +1,60 @@
+{
+  "results": [
+    {
+      "gender": "male",
+      "name": {
+        "title": "Monsieur",
+        "first": "Alex",
+        "last": "Lefevre"
+      },
+      "location": {
+        "street": {
+          "number": 6081,
+          "name": "Place de L'Église"
+        },
+        "city": "Dürnten",
+        "state": "Schaffhausen",
+        "country": "Switzerland",
+        "postcode": 4977,
+        "coordinates": {
+          "latitude": "-57.2185",
+          "longitude": "-102.9430"
+        },
+        "timezone": {
+          "offset": "+4:30",
+          "description": "Kabul"
+        }
+      },
+      "email": "alex.lefevre@example.com",
+      "login": {
+        "uuid": "08a9339f-ed85-4759-8172-ad487e7aea73",
+        "username": "lazydog670",
+        "password": "baggins",
+        "salt": "3YGvCtLp",
+        "md5": "9cb2ab6e95f3075c85aa664900694b48",
+        "sha1": "e972d527298ba1a7a35bad382f18f5674f3820fb",
+        "sha256": "f52a60d7d2309394b1c8cf3fe140e1f9b85f6b4c3b9131cf06f1b06bca4da44d"
+      },
+      "dob": {
+        "date": "1991-10-28T10:04:41.951Z",
+        "age": 30
+      },
+      "registered": {
+        "date": "2007-07-01T14:05:53.815Z",
+        "age": 14
+      },
+      "phone": "079 468 64 28",
+      "cell": "078 437 82 70",
+      "id": {
+        "name": "AVS",
+        "value": "756.4218.2233.08"
+      },
+      "picture": {
+        "large": "https://randomuser.me/api/portraits/men/51.jpg",
+        "medium": "https://randomuser.me/api/portraits/med/men/51.jpg",
+        "thumbnail": "https://randomuser.me/api/portraits/thumb/men/51.jpg"
+      },
+      "nat": "CH"
+    }
+  ]
+}

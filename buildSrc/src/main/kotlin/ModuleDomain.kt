@@ -1,18 +1,18 @@
 object ModuleDomain {
 
-    // region androidx
-    const val androidXCore = "1.6.0"
-    const val androidXAppCompat = "1.3.1"
-    const val androidXConstraintLayout = "2.1.0"
-    // endregion androidx
+    // region koin
+    const val koinVersion = "3.1.2"
+    // endregion koin
 
-    // region androidMaterialDesign
-    const val androidMaterialDesign = "1.4.0"
-    // endregion androidMaterialDesign
+
+    // region coroutines
+    const val coroutinesVersion = "1.4.0"
+    // endregion coroutines
 
     // region test
-    const val jUnit = "4.+"
-    const val androidXTestExt = "1.1.3"
-    const val androidXTestEspresso= "3.4.0"
+    const val kotlinXCoroutinesTestVersion = "1.5.1"
+    const val googleTruthVersion = "1.1.2"
+    const val mockkVersion = "1.12.0"
     // endregion test
+
 }

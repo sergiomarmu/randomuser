@@ -1,10 +1,6 @@
-import ModuleCore.androidMaterialDesign
 import ModuleCore.androidXAppCompat
-import ModuleCore.androidXConstraintLayout
-import ModuleCore.androidXCore
-import ModuleCore.androidXTestEspresso
-import ModuleCore.androidXTestExt
-import ModuleCore.jUnit
+import ModuleCore.androidXNavigationFragmentVersion
+import ModuleCore.coroutinesVersion
 import RandomUser.kotlinVersion
 
 plugins {
@@ -47,8 +43,12 @@ android {
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
 
-    // region test
-    testImplementation("junit:junit:$jUnit")
-    androidTestImplementation("androidx.test.ext:junit:$androidXTestExt")
-    // endregion test
+    // region androidx
+    implementation("androidx.appcompat:appcompat:$androidXAppCompat")
+    implementation("androidx.navigation:navigation-fragment-ktx:$androidXNavigationFragmentVersion")
+    // endregion androidx
+
+    // region coroutines
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
+    // endregion coroutines
 }
