@@ -5,12 +5,14 @@
     <string name="user_loading_button">ADD USERS</string>
     <string name="user_header_adapter_title">Users</string>
     <string name="user_search_hint">Search by Name</string>
-    <string name="user_no_users_available">Oops, no users found!</string>
+    <string name="user_no_users_available">OOPS, NO USERS FOUND!</string>
+    <string name="add_new_user_success">USERS ADDED</string>
+    <string name="delete_user_success">USER DELETED</string>
     <!-- endregion user fragment -->
 
     <!-- region user detail fragment -->
     <string name="first_name_hint">First Name</string>
-    <string name="last_name_hint">Last Name</string>
+    <string name="last_name_hint">SurName</string>
     <string name="email_hint">Email</string>
     <string name="date_hint">Date</string>
     <string name="gender_hint">Gender</string>

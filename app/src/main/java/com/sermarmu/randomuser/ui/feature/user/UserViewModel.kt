@@ -5,6 +5,8 @@ import com.sermarmu.core.base.BaseViewModel
 import com.sermarmu.core.extension.launchInMain
 import com.sermarmu.domain.interactor.UserInteractor
 import com.sermarmu.domain.model.UserModel
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
@@ -15,19 +17,35 @@ abstract class UserViewModel : BaseViewModel() {
 
         object Idle : UserState()
 
-        data class Success(
-            val users: List<UserModel>
-        ) : UserState()
+        sealed class Success : UserState() {
+            abstract val users: List<UserModel>
+
+            data class LoadUsers(
+                override val users: List<UserModel>
+            ) : Success()
+
+            data class LoadNewUsers(
+                override val users: List<UserModel>
+            ) : Success()
+
+            data class Filter(
+                override val users: List<UserModel>
+            ) : Success()
+
+            data class UserDeleted(
+                override val users: List<UserModel>
+            ) : Success()
+        }
 
         data class Failure(
-            val e: Throwable
+            val error: Throwable
         ) : UserState()
 
     }
     // endregion state
 
     // region shared flow
-    abstract val uiStateSharedFlow: SharedFlow<UserState>
+    abstract val uiStateFlow: StateFlow<UserState>
     // endregion shared flow
 
     // region user action
@@ -56,10 +74,10 @@ class UserViewModelImpl(
     private val userInteractor: UserInteractor
 ) : UserViewModel() {
 
-    private val uiStateMutableSharedFlow =
+    private val uiStateMutableStateFlow =
         MutableStateFlow<UserState>(UserState.Idle)
-    override val uiStateSharedFlow: StateFlow<UserState> =
-        uiStateMutableSharedFlow
+    override val uiStateFlow: StateFlow<UserState> =
+        uiStateMutableStateFlow
 
     init {
         this@UserViewModelImpl
@@ -67,57 +85,94 @@ class UserViewModelImpl(
     }
 
     // region userAction
+    private var onLoadMoreUsersActionJob: Job? = null
     override fun onLoadMoreUsersAction() {
-        launchUserAction {
-            userInteractor
-                .retrieveUsersFlow()
-        }
+        val oldJob = onLoadMoreUsersActionJob
+        onLoadMoreUsersActionJob = this@UserViewModelImpl
+            .viewModelScope.launch {
+                oldJob?.cancelAndJoin()
+
+                userInteractor
+                    .retrieveUsersFlow()
+                    .map {
+                        UserState.Success.LoadNewUsers(it)
+                    }.catch<UserState> { e ->
+                        emit(UserState.Failure(e))
+                    }.collect {
+                        launchInMain {
+                            uiStateMutableStateFlow.emit(it)
+                        }
+                    }
+            }
     }
 
+    private var onQueryTypedActionJob: Job? = null
     override fun onQueryTypedAction(
         query: String
     ) {
-        launchUserAction {
-            userInteractor
-                .retrieveUsersByQueryFlow(
-                    query = query
-                )
-        }
+        val oldJob = onQueryTypedActionJob
+        onQueryTypedActionJob = this@UserViewModelImpl
+            .viewModelScope.launch {
+                oldJob?.cancelAndJoin()
+
+                userInteractor
+                    .retrieveUsersByQueryFlow(
+                        query = query
+                    ).map {
+                        UserState.Success.Filter(it)
+                    }.catch<UserState> { e ->
+                        emit(UserState.Failure(e))
+                    }.collect {
+                        launchInMain {
+                            uiStateMutableStateFlow.emit(it)
+                        }
+                    }
+            }
     }
 
+    private var onUserRemoveActionJob: Job? = null
     override fun onUserRemoveAction(
         userModel: UserModel
     ) {
-        launchUserAction {
-            userInteractor
-                .deleteDBUserFlow(
-                    userModel = userModel
-                )
-        }
+        val oldJob = onUserRemoveActionJob
+        onUserRemoveActionJob = this@UserViewModelImpl
+            .viewModelScope.launch {
+                oldJob?.cancelAndJoin()
+
+                userInteractor
+                    .deleteDBUserFlow(
+                        userModel = userModel
+                    ).map {
+                        UserState.Success.UserDeleted(it)
+                    }.catch<UserState> { e ->
+                        emit(UserState.Failure(e))
+                    }.collect {
+                        launchInMain {
+                            uiStateMutableStateFlow.emit(it)
+                        }
+                    }
+            }
     }
     // endregion userAction
 
+    private var retrieveUsersJob: Job? = null
     private fun retrieveUsers() {
-        launchUserAction {
-            userInteractor
-                .retrieveDBUsersFlow()
-        }
-    }
+        val oldJob = retrieveUsersJob
+        retrieveUsersJob = this@UserViewModelImpl
+            .viewModelScope.launch {
+                oldJob?.cancelAndJoin()
 
-    private fun launchUserAction(
-        action: suspend () -> Flow<List<UserModel>>
-    ) {
-        this@UserViewModelImpl.viewModelScope.launch {
-            action.invoke()
-                .map {
-                    UserState.Success(it)
-                }.catch<UserState> { e ->
-                    emit(UserState.Failure(e))
-                }.collect {
-                    launchInMain {
-                        uiStateMutableSharedFlow.emit(it)
+                userInteractor
+                    .retrieveDBUsersFlow()
+                    .map {
+                        UserState.Success.LoadUsers(it)
+                    }.catch<UserState> { e ->
+                        emit(UserState.Failure(e))
+                    }.collect {
+                        launchInMain {
+                            uiStateMutableStateFlow.emit(it)
+                        }
                     }
-                }
-        }
+            }
     }
 }

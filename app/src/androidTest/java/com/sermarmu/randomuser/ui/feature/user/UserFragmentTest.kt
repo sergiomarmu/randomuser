@@ -12,6 +12,7 @@ import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.google.common.truth.Truth
 import com.sermarmu.randomuser.R
 import org.junit.Before
 import org.junit.Test
@@ -21,7 +22,7 @@ import org.junit.runner.RunWith
  * After run this class be sure that mobile is on and unlocked otherwise
  * a java.lang.RuntimeException will be threw
  *
- * This test is designed to testing UI with items already loaded.
+ * This test is designed to testing UI with some items already loaded.
  * Tested on a real device
  */
 

@@ -7,7 +7,7 @@ import java.lang.Exception
 sealed class DataException(
     message: String? = null,
     cause: Throwable? = null
-) : Exception() {
+) : Exception(message, cause) {
     class Unparseable(
         message: String? = null,
         cause: Throwable? = null,

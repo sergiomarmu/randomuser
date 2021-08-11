@@ -10,8 +10,7 @@ interface NetworkApi {
     // region user paging
     @GET("api/")
     suspend fun retrieveUsers(
-//        @Query("page") nextPage: Int,
-        @Query("results") results: Int = 10
+        @Query("results") results: Int = 40
     ): Response<UserListOutput>
     // endregion user paging
 

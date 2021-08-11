@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Parcelable
 import com.sermarmu.domain.model.UserModel.Companion.FEMALE
 import com.sermarmu.domain.model.UserModel.Companion.MALE
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
 

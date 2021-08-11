@@ -8,13 +8,14 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.*
 import androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE
 import com.sermarmu.domain.model.UserModel
+import com.sermarmu.randomuser.R
 import com.sermarmu.randomuser.common.AppBaseFragment
 import com.sermarmu.randomuser.databinding.UserAdapterBinding
 import com.sermarmu.randomuser.databinding.UserAdapterHeaderBinding
 import com.sermarmu.randomuser.databinding.UserFragmentBinding
 import com.sermarmu.randomuser.extensions.debounce
 import com.sermarmu.randomuser.extensions.loadImageFromUrlWithRadius
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.collect
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import com.sermarmu.randomuser.ui.feature.user.UserViewModel.UserState as VM_UserState
 
@@ -49,8 +50,8 @@ class UserFragment : AppBaseFragment() {
         initView()
 
         lifecycleScope.launchWhenStarted {
-            viewModel.uiStateSharedFlow
-                .collectLatest {
+            viewModel.uiStateFlow
+                .collect {
                     onUserState(it)
                 }
         }
@@ -112,7 +113,7 @@ class UserFragment : AppBaseFragment() {
             is VM_UserState.Idle -> {
                 // Nothing to do
             }
-            is VM_UserState.Success -> when {
+            is VM_UserState.Success -> (when {
                 state.users.isEmpty() -> binding.vaUsers.displayedChild = 0
                 else -> {
                     binding.vaUsers.displayedChild = 1
@@ -120,11 +121,23 @@ class UserFragment : AppBaseFragment() {
                         .adapters[1] as Adapter)
                         .submitList(state.users)
                 }
+            }).also {
+                (when (state) {
+                    is UserViewModel.UserState.Success.LoadNewUsers -> R.string.add_new_user_success
+                    is UserViewModel.UserState.Success.UserDeleted -> R.string.delete_user_success
+                    else -> null
+                })?.let { stringId ->
+                    messageLauncher
+                        .showPositive(
+                            view = requireView(),
+                            stringId = stringId
+                        )
+                }
             }
             is VM_UserState.Failure -> messageLauncher
                 .showNegative(
                     view = requireView(),
-                    throwable = state.e
+                    throwable = state.error
                 )
         }
     }
