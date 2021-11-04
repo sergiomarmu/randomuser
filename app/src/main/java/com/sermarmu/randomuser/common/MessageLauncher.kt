@@ -1,10 +1,11 @@
-package com.sermarmu.randomuser
+package com.sermarmu.randomuser.common
 
 import android.content.Context
 import android.view.View
 import androidx.annotation.StringRes
 import com.google.android.material.snackbar.Snackbar
 import com.sermarmu.data.handler.DataException
+import com.sermarmu.randomuser.R
 import java.util.*
 
 interface MessageLauncher {

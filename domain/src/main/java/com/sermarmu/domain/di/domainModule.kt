@@ -1,29 +1,20 @@
 package com.sermarmu.domain.di
 
-import com.sermarmu.domain.interactor.*
+import com.sermarmu.domain.interactor.usercase.*
 import org.koin.dsl.module
 
 val domainModule = module {
 
-    single<UserInteractor> { UserInteractorImpl(get(), get()) }
+    factory { GetUsers(get()) }
+    factory { AddUsers(get()) }
+    factory { SearchUsers(get()) }
+    factory { DeleteUser(get()) }
 
-    single<NetworkInteractor> { NetworkInteractorImpl(get()) }
-
-    single<LocalInteractor> { LocalInteractorImpl(get()) }
+    factory { UserCases(get(), get(), get(), get()) }
 }
 
-// region interactor
-private fun provideUserInteractor(
-    networkInteractor: UserInteractorImpl
-): UserInteractor = networkInteractor
-
-
-private fun provideNetworkInteractor(
-    networkInteractor: NetworkInteractorImpl
-): NetworkInteractor = networkInteractor
-
-private fun provideLocalInteractor(
-    localInteractor: LocalInteractorImpl
-): LocalInteractor = localInteractor
-
-// endregion interactor
+// region user case
+private fun provideUserCase(
+   userCases: UserCases
+) = userCases
+// endregion user case

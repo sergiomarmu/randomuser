@@ -1,4 +1,4 @@
-package com.sermarmu.data.source.network.io
+package com.sermarmu.data.source.network.userrandom.io
 
 import com.google.gson.annotations.SerializedName
 import com.sermarmu.data.entity.User

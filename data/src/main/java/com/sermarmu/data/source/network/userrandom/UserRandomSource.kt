@@ -1,21 +1,21 @@
-package com.sermarmu.data.source.network
+package com.sermarmu.data.source.network.userrandom
 
 import com.sermarmu.core.extension.launchInIO
 import com.sermarmu.data.entity.User
 import com.sermarmu.data.handler.launchRequest
-import com.sermarmu.data.source.network.io.toUser
+import com.sermarmu.data.source.network.userrandom.io.toUser
 
-interface NetworkSource {
+interface UserRandomSource {
     suspend fun retrieveUsers(): List<User>
 }
 
-class NetworkSourceImpl(
-    private val networkApi: NetworkApi
-) : NetworkSource {
+class UserRandomSourceImpl(
+    private val userRandomApi: UserRandomApi
+) : UserRandomSource {
 
     override suspend fun retrieveUsers(): List<User> = launchInIO {
         launchRequest {
-            networkApi.retrieveUsers()
+            userRandomApi.retrieveUsers()
         }.users.toUser()
     }
 

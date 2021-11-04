@@ -32,7 +32,10 @@ class UserDetailFragment : BottomSheetDialogFragment() {
         savedInstanceState: Bundle?
     ) {
         super.onCreate(savedInstanceState)
-        setStyle(DialogFragment.STYLE_NORMAL, R.style.ThemeOverlay_AppTheme_BottomSheetDialog)
+        setStyle(
+            DialogFragment.STYLE_NORMAL,
+            R.style.ThemeOverlay_AppTheme_BottomSheetDialog
+        )
     }
 
     override fun onCreateView(
@@ -66,7 +69,7 @@ class UserDetailFragment : BottomSheetDialogFragment() {
             tieCityUserDetail.readOnlyMode(args.userModel.location.city)
 
             mbDeleteUserDetail.setOnClickListener {
-                viewModel.onUserRemoveAction(
+                viewModel.onUserRemoveRequest(
                     args.userModel
                 )
                 findNavController().popBackStack()
@@ -78,5 +81,4 @@ class UserDetailFragment : BottomSheetDialogFragment() {
         super.onDestroy()
         _binding = null
     }
-
 }

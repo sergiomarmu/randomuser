@@ -4,10 +4,7 @@ package com.sermarmu.randomuser
 
 import com.google.common.truth.Truth
 import com.sermarmu.data.handler.DataException
-import com.sermarmu.domain.interactor.LocalInteractor
-import com.sermarmu.domain.interactor.NetworkInteractor
-import com.sermarmu.domain.interactor.UserInteractor
-import com.sermarmu.domain.interactor.UserInteractorImpl
+import com.sermarmu.domain.interactor.usercase.UserCases
 import com.sermarmu.randomuser.ui.feature.user.UserViewModel
 import com.sermarmu.randomuser.ui.feature.user.UserViewModelImpl
 import com.sermarmu.randomuser.utils.FakeObjectProviderTest
@@ -26,8 +23,8 @@ import org.junit.Test
 import com.sermarmu.randomuser.ui.feature.user.UserViewModel.UserState as VM_State
 
 class UserViewModelTest {
-
-    private val userInteractor = mockkClass(UserInteractor::class)
+/*
+    private val userCases = mockkClass(UserCases::class)
     private lateinit var viewModel: UserViewModel
 
     private val testDispatcher = TestCoroutineDispatcher()
@@ -35,12 +32,12 @@ class UserViewModelTest {
     @Before
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
-        coEvery { userInteractor.retrieveDBUsersFlow() } returns flowOf(
+        coEvery { userCases.getUsers() } returns flowOf(
             listOf(
                 FakeObjectProviderTest.fakeUserModel
             )
         )
-        viewModel = UserViewModelImpl(userInteractor)
+        viewModel = UserViewModelImpl(userCases)
     }
 
     @Test
@@ -58,7 +55,7 @@ class UserViewModelTest {
                 )
             )
 
-            viewModel.onQueryTypedAction(query)
+            viewModel.onQueryTypedRequest(query)
 
             val expectedResult =
                 VM_State.Success.Filter(listOf(FakeObjectProviderTest.fakeUserModel))
@@ -73,11 +70,11 @@ class UserViewModelTest {
     @Test
     fun `should return a list of userModel through stateFlow with a Success state due to a user delete action`() =
         runBlockingTest {
-            coEvery { userInteractor.deleteDBUserFlow(FakeObjectProviderTest.fakeUserModel) } returns flowOf(
+            coEvery { userInteractor.deleteUserFlow(FakeObjectProviderTest.fakeUserModel) } returns flowOf(
                 listOf()
             )
 
-            viewModel.onUserRemoveAction(FakeObjectProviderTest.fakeUserModel)
+            viewModel.onUserRemoveRequest(FakeObjectProviderTest.fakeUserModel)
 
             val expectedResult = VM_State.Success.UserDeleted(listOf())
 
@@ -97,7 +94,7 @@ class UserViewModelTest {
                 )
             )
 
-            viewModel.onLoadMoreUsersAction()
+            viewModel.onLoadMoreUsersRequest()
 
             val expectedResult =
                 VM_State.Success.LoadNewUsers(listOf(FakeObjectProviderTest.fakeUserModel.copy(uuid = "uuid")))
@@ -141,7 +138,7 @@ class UserViewModelTest {
             // endregion arrange
 
             // region act
-            viewModel.onLoadMoreUsersAction()
+            viewModel.onLoadMoreUsersRequest()
             val result = viewModel.uiStateFlow
                 .first()
             // endregion act
@@ -157,5 +154,5 @@ class UserViewModelTest {
     @After
     fun afterEnd() {
         Dispatchers.resetMain()
-    }
+    }*/
 }

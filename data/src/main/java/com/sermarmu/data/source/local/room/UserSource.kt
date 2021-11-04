@@ -1,12 +1,13 @@
-package com.sermarmu.data.source.local
+package com.sermarmu.data.source.local.room
 
 
 import com.sermarmu.core.extension.launchInIO
 import com.sermarmu.data.entity.User
 import com.sermarmu.data.entity.toUserDB
-import com.sermarmu.data.source.local.io.toUser
+import com.sermarmu.data.source.local.room.io.toUser
+import kotlinx.coroutines.flow.Flow
 
-interface LocalSource {
+interface UserSource {
 
     suspend fun insertAllUsers(
         users: List<User>
@@ -25,35 +26,35 @@ interface LocalSource {
     )
 }
 
-class LocalSourceImpl(
-    private val localApi: LocalApi
-) : LocalSource {
+class UserSourceImpl(
+    private val userApi: UserApi
+) : UserSource {
 
     override suspend fun insertAllUsers(
         users: List<User>
     ) {
         launchInIO {
-            localApi.insertAllUsers(
+            userApi.insertAllUsers(
                 users = users.toUserDB()
             )
         }
     }
 
     override suspend fun retrieveAllUsers(): List<User> = launchInIO {
-        localApi.retrieveAllUsers().toUser()
+        userApi.retrieveAllUsers().toUser()
     }
 
     override suspend fun findUserByName(
         query: String
     ): List<User> = launchInIO {
-        localApi.findUserByName(
+        userApi.findUserByName(
             "$query%"
         ).toUser()
     }
 
     override suspend fun clearAllUsers() {
         launchInIO {
-            localApi.clearAllUsers()
+            userApi.clearAllUsers()
         }
     }
 
@@ -61,7 +62,7 @@ class LocalSourceImpl(
         user: User
     ) {
         launchInIO {
-            localApi.deleteUsers(
+            userApi.deleteUsers(
                 user = user.toUserDB()
             )
         }

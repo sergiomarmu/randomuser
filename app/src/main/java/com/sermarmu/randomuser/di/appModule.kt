@@ -3,8 +3,8 @@ package com.sermarmu.randomuser.di
 import android.content.Context
 import com.sermarmu.data.di.RETROFIT_API_BASE_URL
 import com.sermarmu.data.di.ROOM_DATABASE_NAME
-import com.sermarmu.randomuser.MessageLauncher
-import com.sermarmu.randomuser.MessageLauncherImpl
+import com.sermarmu.randomuser.common.MessageLauncher
+import com.sermarmu.randomuser.common.MessageLauncherImpl
 import com.sermarmu.randomuser.R
 import com.sermarmu.randomuser.ui.feature.user.UserViewModelImpl
 import org.koin.androidx.viewmodel.dsl.viewModel

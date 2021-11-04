@@ -2,13 +2,15 @@ package com.sermarmu.domain.repository
 
 import com.sermarmu.domain.model.UserModel
 
-interface LocalRepository {
+interface UserRepository {
 
-    suspend fun insertAllUsers(
+    suspend fun retrieveNewUsers(): List<UserModel>
+
+    suspend fun saveUsers(
         users: List<UserModel>
     )
 
-    suspend fun retrieveAllUsers(): List<UserModel>
+    suspend fun retrieveAllAvailableUsers(): List<UserModel>
 
     suspend fun findUserByName(
         query: String

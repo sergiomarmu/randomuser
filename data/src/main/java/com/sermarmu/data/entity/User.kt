@@ -1,7 +1,8 @@
 package com.sermarmu.data.entity
 
-import com.sermarmu.data.source.local.io.UserDB
+import com.sermarmu.data.source.local.room.io.UserDB
 import com.sermarmu.domain.model.UserModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList

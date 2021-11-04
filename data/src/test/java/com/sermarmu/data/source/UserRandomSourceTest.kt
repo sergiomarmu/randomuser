@@ -4,11 +4,11 @@ package com.sermarmu.data.source
 import com.google.common.truth.Truth
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.sermarmu.data.source.network.NetworkApi
-import com.sermarmu.data.source.network.NetworkSource
-import com.sermarmu.data.source.network.NetworkSourceImpl
-import com.sermarmu.data.source.network.io.UserListOutput
-import com.sermarmu.data.source.network.io.toUser
+import com.sermarmu.data.source.network.userrandom.UserRandomApi
+import com.sermarmu.data.source.network.userrandom.UserRandomSource
+import com.sermarmu.data.source.network.userrandom.UserRandomSourceImpl
+import com.sermarmu.data.source.network.userrandom.io.UserListOutput
+import com.sermarmu.data.source.network.userrandom.io.toUser
 import com.sermarmu.data.utils.MockJson
 import com.sermarmu.data.utils.retrieveApi
 import kotlinx.coroutines.Dispatchers
@@ -29,12 +29,12 @@ private const val fakePortServer = 8080
 private const val fakeUrl = "/"
 
 @RunWith(MockitoJUnitRunner::class)
-class NetworkSourceTest {
+class UserRandomSourceTest {
 
     private val fakeServer = MockWebServer()
 
-    private lateinit var networkApi: NetworkApi
-    private lateinit var networkSource: NetworkSource
+    private lateinit var userRandomApi: UserRandomApi
+    private lateinit var userRandomSource: UserRandomSource
     private lateinit var gson: Gson
     private lateinit var mockJson: MockJson
 
@@ -52,12 +52,18 @@ class NetworkSourceTest {
          */
         fakeServer.start(fakePortServer)
 
+        fakeServer.enqueue(
+            MockResponse().setBody(
+                mockJson.json(fakeRandomUserJsonPath)
+            )
+        )
+
         /**
          * Init Api & necessary elements like Gson
          */
-        networkApi = fakeServer.retrieveApi(fakeUrl)
+        userRandomApi = fakeServer.retrieveApi(fakeUrl)
 
-        networkSource = NetworkSourceImpl(networkApi)
+        userRandomSource = UserRandomSourceImpl(userRandomApi)
         gson = GsonBuilder().create()
         mockJson = MockJson()
 
@@ -65,23 +71,32 @@ class NetworkSourceTest {
     }
 
     @Test
-    fun `should return a api response with one user`() = runBlocking {
+    fun whenRequestingNewUsers_shouldGetAnNotNullUserList() = runBlocking {
+        val result = userRandomSource
+            .retrieveUsers()
+
+        Truth.assertThat(result).isNotNull()
+    }
+
+    @Test
+    fun whenRequestingNewUsers_shouldGetAnNotEmptyUserList() = runBlocking {
+        val result = userRandomSource
+            .retrieveUsers()
+
+        Truth.assertThat(result).isNotEmpty()
+    }
+
+    @Test
+    fun whenRequestingNewUsers_shouldGetAnUserList() = runBlocking {
         val expectedResult = gson.fromJson(
             mockJson.json(fakeRandomUserJsonPath),
             UserListOutput::class.java
         ).users
             .toUser()
 
-        fakeServer.enqueue(
-            MockResponse().setBody(
-                mockJson.json(fakeRandomUserJsonPath)
-            )
-        )
-
-        val result = networkSource
+        val result = userRandomSource
             .retrieveUsers()
 
-        Truth.assertThat(result[0]).isNotNull()
         Truth.assertThat(result[0].uuid).isEqualTo(expectedResult[0].uuid)
         Truth.assertThat(result.size).isEqualTo(expectedResult.size)
         Truth.assertThat(result).isEqualTo(expectedResult)

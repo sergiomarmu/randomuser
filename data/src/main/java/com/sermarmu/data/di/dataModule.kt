@@ -2,17 +2,15 @@ package com.sermarmu.data.di
 
 import android.content.Context
 import androidx.room.Room
-import com.sermarmu.data.repository.LocalRepositoryImpl
-import com.sermarmu.data.repository.NetworkRepositoryImpl
-import com.sermarmu.data.source.local.LocalApi
-import com.sermarmu.data.source.local.LocalDatabase
-import com.sermarmu.data.source.local.LocalSource
-import com.sermarmu.data.source.local.LocalSourceImpl
-import com.sermarmu.data.source.network.NetworkApi
-import com.sermarmu.data.source.network.NetworkSource
-import com.sermarmu.data.source.network.NetworkSourceImpl
-import com.sermarmu.domain.repository.LocalRepository
-import com.sermarmu.domain.repository.NetworkRepository
+import com.sermarmu.data.repository.UserRepositoryImpl
+import com.sermarmu.data.source.local.room.UserApi
+import com.sermarmu.data.source.local.room.UserDatabase
+import com.sermarmu.data.source.local.room.UserSource
+import com.sermarmu.data.source.local.room.UserSourceImpl
+import com.sermarmu.data.source.network.userrandom.UserRandomApi
+import com.sermarmu.data.source.network.userrandom.UserRandomSource
+import com.sermarmu.data.source.network.userrandom.UserRandomSourceImpl
+import com.sermarmu.domain.repository.UserRepository
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.BuildConfig
@@ -34,17 +32,15 @@ val dataModule = module {
 
     factory { provideNetworkApi(get()) }
 
-    single<NetworkSource> { NetworkSourceImpl(get()) }
+    single<UserRandomSource> { UserRandomSourceImpl(get()) }
 
-    single<NetworkRepository> { NetworkRepositoryImpl(get()) }
+    single<UserRepository> { UserRepositoryImpl(get(), get()) }
 
     factory { provideLocalDatabase(get()) }
 
     factory { provideRoomDatabase(get(), get(named(ROOM_DATABASE_NAME))) }
 
-    single<LocalSource> { LocalSourceImpl(get()) }
-
-    single<LocalRepository> { LocalRepositoryImpl(get()) }
+    single<UserSource> { UserSourceImpl(get()) }
 }
 
 
@@ -78,22 +74,22 @@ private fun provideRetrofit(
 
 private fun provideNetworkApi(
     retrofit: Retrofit
-): NetworkApi = retrofit.create(NetworkApi::class.java)
+): UserRandomApi = retrofit.create(UserRandomApi::class.java)
 // endregion retrofit
 // endregion network
 
 // region local
 // region room
 fun provideLocalDatabase(
-    localDatabase: LocalDatabase
-): LocalApi = localDatabase.localApi()
+    userDatabase: UserDatabase
+): UserApi = userDatabase.localApi()
 
 fun provideRoomDatabase(
     context: Context,
     nameRoom: String
 ) = Room.databaseBuilder(
     context,
-    LocalDatabase::class.java,
+    UserDatabase::class.java,
     nameRoom
 ).build()
 // endregion room

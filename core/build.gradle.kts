@@ -48,6 +48,8 @@ dependencies {
     implementation("androidx.navigation:navigation-fragment-ktx:$androidXNavigationFragmentVersion")
     // endregion androidx
 
+    implementation("com.squareup.okhttp3:okhttp:4.9.2")
+
     // region coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
     // endregion coroutines

@@ -1,21 +1,19 @@
 package com.sermarmu.randomuser.ui.feature.user
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.sermarmu.core.base.BaseViewModel
 import com.sermarmu.core.extension.launchInMain
-import com.sermarmu.domain.interactor.UserInteractor
+import com.sermarmu.domain.interactor.usercase.UserCases
 import com.sermarmu.domain.model.UserModel
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.cancelAndJoin
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
 
 abstract class UserViewModel : BaseViewModel() {
 
     // region state
     sealed class UserState {
-
-        object Idle : UserState()
 
         sealed class Success : UserState() {
             abstract val users: List<UserModel>
@@ -44,135 +42,117 @@ abstract class UserViewModel : BaseViewModel() {
     }
     // endregion state
 
-    // region shared flow
-    abstract val uiStateFlow: StateFlow<UserState>
-    // endregion shared flow
+    // region livedata
+    abstract val userStateLiveData: LiveData<UserState>
+    // endregion livedata
 
     // region user action
     /**
      * User request for retrieve more users
      */
-    abstract fun onLoadMoreUsersAction()
+    abstract fun onLoadMoreUsersRequest()
 
     /**
      * User request for search users by name through a query
      */
-    abstract fun onQueryTypedAction(
+    abstract fun onQueryTypedRequest(
         query: String
     )
 
     /**
      * User request for delete an user
      */
-    abstract fun onUserRemoveAction(
+    abstract fun onUserRemoveRequest(
         userModel: UserModel
     )
     // endregion user action
 }
 
 class UserViewModelImpl(
-    private val userInteractor: UserInteractor
+    private val userCases: UserCases
 ) : UserViewModel() {
 
-    private val uiStateMutableStateFlow =
-        MutableStateFlow<UserState>(UserState.Idle)
-    override val uiStateFlow: StateFlow<UserState> =
-        uiStateMutableStateFlow
+    private val userStateMutableLiveData = MutableLiveData<UserState>()
+    override val userStateLiveData: LiveData<UserState>
+        get() = userStateMutableLiveData
 
     init {
-        this@UserViewModelImpl
-            .retrieveUsers()
+        userRequest(
+            UserRequestEvent.RetrieveUsers
+        )
     }
 
-    // region userAction
-    private var onLoadMoreUsersActionJob: Job? = null
-    override fun onLoadMoreUsersAction() {
-        val oldJob = onLoadMoreUsersActionJob
-        onLoadMoreUsersActionJob = this@UserViewModelImpl
-            .viewModelScope.launch {
-                oldJob?.cancelAndJoin()
-
-                userInteractor
-                    .retrieveUsersFlow()
-                    .map {
-                        UserState.Success.LoadNewUsers(it)
-                    }.catch<UserState> { e ->
-                        emit(UserState.Failure(e))
-                    }.collect {
-                        launchInMain {
-                            uiStateMutableStateFlow.emit(it)
-                        }
-                    }
-            }
+    // region user request
+    override fun onLoadMoreUsersRequest() {
+        userRequest(
+            UserRequestEvent.RetrieveMoreUsers
+        )
     }
 
-    private var onQueryTypedActionJob: Job? = null
-    override fun onQueryTypedAction(
+    override fun onQueryTypedRequest(
         query: String
     ) {
-        val oldJob = onQueryTypedActionJob
-        onQueryTypedActionJob = this@UserViewModelImpl
-            .viewModelScope.launch {
-                oldJob?.cancelAndJoin()
-
-                userInteractor
-                    .retrieveUsersByQueryFlow(
-                        query = query
-                    ).map {
-                        UserState.Success.Filter(it)
-                    }.catch<UserState> { e ->
-                        emit(UserState.Failure(e))
-                    }.collect {
-                        launchInMain {
-                            uiStateMutableStateFlow.emit(it)
-                        }
-                    }
-            }
+        userRequest(
+            UserRequestEvent.SearchUser(query)
+        )
     }
 
-    private var onUserRemoveActionJob: Job? = null
-    override fun onUserRemoveAction(
+    override fun onUserRemoveRequest(
         userModel: UserModel
     ) {
-        val oldJob = onUserRemoveActionJob
-        onUserRemoveActionJob = this@UserViewModelImpl
-            .viewModelScope.launch {
-                oldJob?.cancelAndJoin()
-
-                userInteractor
-                    .deleteDBUserFlow(
-                        userModel = userModel
-                    ).map {
-                        UserState.Success.UserDeleted(it)
-                    }.catch<UserState> { e ->
-                        emit(UserState.Failure(e))
-                    }.collect {
-                        launchInMain {
-                            uiStateMutableStateFlow.emit(it)
-                        }
-                    }
-            }
+        userRequest(
+            UserRequestEvent.DeleteUser(userModel)
+        )
     }
-    // endregion userAction
+    // endregion user request
 
-    private var retrieveUsersJob: Job? = null
-    private fun retrieveUsers() {
-        val oldJob = retrieveUsersJob
-        retrieveUsersJob = this@UserViewModelImpl
+    private fun userRequest(
+        userRequestEvent: UserRequestEvent
+    ) {
+        this@UserViewModelImpl
             .viewModelScope.launch {
-                oldJob?.cancelAndJoin()
 
-                userInteractor
-                    .retrieveDBUsersFlow()
-                    .map {
-                        UserState.Success.LoadUsers(it)
-                    }.catch<UserState> { e ->
-                        emit(UserState.Failure(e))
-                    }.collect {
-                        launchInMain {
-                            uiStateMutableStateFlow.emit(it)
+                when (userRequestEvent) {
+                    is UserRequestEvent.RetrieveUsers -> userCases
+                        .getUsers()
+                        .map {
+                            UserState.Success.LoadUsers(it)
                         }
+                    is UserRequestEvent.RetrieveMoreUsers -> {
+                        userCases
+                            .addUsers()
+
+                        userCases
+                            .getUsers()
+                            .map {
+                                UserState.Success.LoadNewUsers(it)
+                            }
                     }
+                    is UserRequestEvent.SearchUser -> userCases
+                        .searchUsers(
+                            query = userRequestEvent.query
+                        ).map {
+                            UserState.Success.Filter(it)
+                        }
+                    is UserRequestEvent.DeleteUser -> {
+                        userCases
+                            .deleteUser(
+                                userModel = userRequestEvent.userModel
+                            )
+
+                        userCases
+                            .getUsers()
+                            .map {
+                                UserState.Success.UserDeleted(it)
+                            }
+                    }
+                }.catch<UserState> { e ->
+                    emit(UserState.Failure(e))
+                }.collect {
+                    launchInMain {
+                        userStateMutableLiveData.value = it
+                    }
+                }
             }
     }
 }

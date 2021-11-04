@@ -1,10 +1,11 @@
-package com.sermarmu.data.source.local
+package com.sermarmu.data.source.local.room
 
 import androidx.room.*
-import com.sermarmu.data.source.local.io.UserDB
+import com.sermarmu.data.source.local.room.io.UserDB
+import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface LocalApi {
+interface UserApi {
 
     // region users
     @Insert(onConflict = OnConflictStrategy.REPLACE)

@@ -1,14 +1,12 @@
-package com.sermarmu.data.source.local.io
+package com.sermarmu.data.source.local.room.io
 
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import com.sermarmu.data.entity.User
-import com.sermarmu.data.source.local.io.UserDB.Companion.FEMALE
-import kotlinx.coroutines.flow.asFlow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.toList
+import com.sermarmu.data.source.local.room.io.UserDB.Companion.FEMALE
+import kotlinx.coroutines.flow.*
 
 @Entity(tableName = "users")
 data class UserDB(
@@ -47,31 +45,31 @@ data class UserDB(
 }
 
 suspend fun Iterable<UserDB>.toUser() = asFlow().map {
-    User(
-        id = it.id,
-        uuid = it.uuid,
-        gender = if (it.gender == FEMALE)
-            User.Gender.FEMALE
-        else User.Gender.MALE,
-        name = User.SurName(
-            first = it.firstName,
-            last = it.lastName
-        ),
-        location = User.Location(
-            street = User.Location.Street(
-                number = it.streetNumber,
-                name = it.streetName
+        User(
+            id = it.id,
+            uuid = it.uuid,
+            gender = if (it.gender == FEMALE)
+                User.Gender.FEMALE
+            else User.Gender.MALE,
+            name = User.SurName(
+                first = it.firstName,
+                last = it.lastName
             ),
-            state = it.state,
-            city = it.city
-        ),
-        registered = User.Registered(
-            date = it.dateRegistered
-        ),
-        email = it.email,
-        picture = User.Picture(
-            large = it.picture
-        ),
-        phone = it.phone
-    )
+            location = User.Location(
+                street = User.Location.Street(
+                    number = it.streetNumber,
+                    name = it.streetName
+                ),
+                state = it.state,
+                city = it.city
+            ),
+            registered = User.Registered(
+                date = it.dateRegistered
+            ),
+            email = it.email,
+            picture = User.Picture(
+                large = it.picture
+            ),
+            phone = it.phone
+        )
 }.toList()

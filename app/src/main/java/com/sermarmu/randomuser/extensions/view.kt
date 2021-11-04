@@ -1,6 +1,5 @@
 package com.sermarmu.randomuser.extensions
 
-import android.view.View
 import android.widget.EditText
 import androidx.core.widget.doAfterTextChanged
 import com.google.android.material.textfield.TextInputEditText
@@ -17,7 +16,7 @@ fun EditText.debounce(
     debounceJob = coroutineScope.launch {
         debounceJob?.cancel()
         doAfterTextChanged {
-            postDelayed({ action(it.toString()) }, delay)
+            postDelayed( { action(it.toString()) }, delay)
         }
     }
 }
@@ -31,16 +30,4 @@ fun TextInputEditText.readOnlyMode(
     isFocusableInTouchMode = false
     isCursorVisible = false
     isSingleLine = true
-}
-
-fun View.show() {
-    visibility = View.VISIBLE
-}
-
-fun View.hide() {
-    visibility = View.INVISIBLE
-}
-
-fun View.gone() {
-    visibility = View.GONE
 }

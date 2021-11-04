@@ -1,7 +1,7 @@
 package com.sermarmu.data.utils
 
 import com.sermarmu.data.entity.User
-import com.sermarmu.data.source.network.io.UserOutput
+import com.sermarmu.data.source.network.userrandom.io.UserOutput
 import com.sermarmu.domain.model.UserModel
 
 class FakeObjectProviderTest {
